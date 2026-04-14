@@ -2,6 +2,8 @@
 
 A Ruby on Rails application that accepts an address, retrieves weather forecast data, and displays current conditions along with a 7-day extended forecast. Results are cached for 30 minutes by zip code.
 
+**Live demo:** https://weather-forecast-showcase-7487a9a8afb5.herokuapp.com/
+
 ## Requirements
 
 - Ruby 3.3+
