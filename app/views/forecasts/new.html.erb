@@ -1,0 +1,41 @@
+<% content_for(:title, "Weather Forecast") %>
+<% content_for(:body_class, "weather-bg theme-clear") %>
+
+<div class="weather-app">
+  <div class="search-hero fade-in">
+    <i class="bi bi-cloud-sun-fill search-hero-icon"></i>
+    <h1 class="search-hero-title">Weather</h1>
+    <p class="search-hero-subtitle">Search for a city or address</p>
+  </div>
+
+  <div class="search-container fade-in" style="animation-delay: 0.15s;">
+    <%= form_with url: forecast_path, method: :post, local: true, html: { id: "forecast-form" } do |f| %>
+      <div class="search-input-wrap">
+        <i class="bi bi-search search-input-icon"></i>
+        <%= f.text_field :address,
+            value: params[:address],
+            class: "search-input",
+            placeholder: "Search for a city or address",
+            required: true,
+            autofocus: true,
+            autocomplete: "off",
+            id: "address" %>
+      </div>
+      <button type="submit" class="search-btn" id="submit-btn">
+        <span id="btn-text">Get Forecast</span>
+        <span id="btn-loading" class="d-none">
+          <span class="spinner"></span>
+          Looking up...
+        </span>
+      </button>
+    <% end %>
+  </div>
+
+  <footer class="search-footer fade-in" style="animation-delay: 0.25s;">
+    Powered by Open-Meteo &middot; Cached for 30 min per zip code
+  </footer>
+</div>
+
+<% content_for(:scripts) do %>
+  <%= render "forecasts/form_loading" %>
+<% end %>

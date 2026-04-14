@@ -1,0 +1,19 @@
+<%# Disables submit buttons and shows a spinner while the form is submitting.
+    Accepts a list of button ID suffixes to target (e.g. "" for #submit-btn,
+    "-2" for #submit-btn-2). %>
+<script>
+  (function () {
+    var suffixes = <%= raw (local_assigns[:suffixes] || [""]).to_json %>;
+    suffixes.forEach(function (s) {
+      var btn  = document.getElementById("submit-btn" + s);
+      if (!btn) return;
+      btn.closest("form").addEventListener("submit", function () {
+        btn.disabled = true;
+        var text = document.getElementById("btn-text" + s);
+        var load = document.getElementById("btn-loading" + s);
+        if (text) text.classList.add("d-none");
+        if (load) load.classList.remove("d-none");
+      });
+    });
+  })();
+</script>
