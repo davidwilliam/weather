@@ -12,7 +12,7 @@ RSpec.describe AddressGeocodingService do
           city: "Washington",
           data: {}
         )
-        allow(Geocoder).to receive(:search).and_return([result])
+        allow(Geocoder).to receive(:search).and_return([ result ])
       end
 
       it "returns a Result with zip code, coordinates, and city" do
@@ -35,7 +35,7 @@ RSpec.describe AddressGeocodingService do
           city: "New York",
           data: { "address" => { "postcode" => "10007" } }
         )
-        allow(Geocoder).to receive(:search).and_return([result])
+        allow(Geocoder).to receive(:search).and_return([ result ])
       end
 
       it "extracts the zip code from the data hash" do
@@ -55,7 +55,7 @@ RSpec.describe AddressGeocodingService do
           city: nil,
           data: { "address" => { "postcode" => "10007", "town" => "Springfield" } }
         )
-        allow(Geocoder).to receive(:search).and_return([result])
+        allow(Geocoder).to receive(:search).and_return([ result ])
       end
 
       it "extracts the city from the data hash town field" do
@@ -90,7 +90,7 @@ RSpec.describe AddressGeocodingService do
           city: nil,
           data: {}
         )
-        allow(Geocoder).to receive(:search).and_return([result])
+        allow(Geocoder).to receive(:search).and_return([ result ])
       end
 
       it "raises AddressNotFoundError mentioning the missing zip code" do

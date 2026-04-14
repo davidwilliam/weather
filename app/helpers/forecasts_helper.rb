@@ -46,7 +46,7 @@ module ForecastsHelper
   # Returns a Bootstrap Icon <i> tag for the given weather description.
   def weather_icon(description, extra_class: nil)
     icon_class = WEATHER_ICONS.fetch(description, "bi-question-circle")
-    css = ["bi", icon_class, extra_class].compact.join(" ")
+    css = [ "bi", icon_class, extra_class ].compact.join(" ")
     tag.i(class: css, title: description, aria: { label: description })
   end
 
