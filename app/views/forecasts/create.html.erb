@@ -1,0 +1,107 @@
+<% content_for(:title, "#{@city || @zip_code} Weather") %>
+<% content_for(:body_class, "weather-bg #{weather_theme_class(@forecast.daily_forecasts.first.weather_description)}") %>
+
+<%
+  # Compute global min/max across all 7 days for the temperature bar visualization.
+  global_min = @forecast.daily_forecasts.map(&:low_temperature).min
+  global_max = @forecast.daily_forecasts.map(&:high_temperature).max
+%>
+
+<div class="weather-app">
+
+  <%# Back / search link %>
+  <nav class="weather-nav fade-in">
+    <%= link_to root_path, class: "weather-nav-link" do %>
+      <i class="bi bi-chevron-left"></i> Search
+    <% end %>
+
+    <% if @cached %>
+      <span class="cache-badge">
+        <i class="bi bi-lightning-charge-fill"></i> Cached
+      </span>
+    <% end %>
+  </nav>
+
+  <%# Hero: city, temperature, conditions %>
+  <header class="weather-hero fade-in" style="animation-delay: 0.05s;">
+    <h1 class="weather-hero-city"><%= @city || @zip_code %></h1>
+    <p class="weather-hero-temp"><%= format_temperature(@forecast.current_temperature) %></p>
+    <p class="weather-hero-condition"><%= @forecast.daily_forecasts.first.weather_description %></p>
+    <p class="weather-hero-hilo">
+      H:<%= format_temperature(@forecast.current_high) %>
+      L:<%= format_temperature(@forecast.current_low) %>
+    </p>
+  </header>
+
+  <%# 7-day forecast card with temperature bars %>
+  <section class="glass-card fade-in" style="animation-delay: 0.15s;">
+    <h2 class="glass-card-header">
+      <i class="bi bi-calendar-week"></i> 7-DAY FORECAST
+    </h2>
+    <div class="forecast-list">
+      <% @forecast.daily_forecasts.each_with_index do |day, index| %>
+        <div class="forecast-row">
+          <div class="forecast-day">
+            <%= index == 0 ? "Today" : day.date.strftime("%a") %>
+          </div>
+          <div class="forecast-icon">
+            <%= weather_icon(day.weather_description) %>
+          </div>
+          <div class="forecast-low">
+            <%= format_temperature(day.low_temperature) %>
+          </div>
+          <div class="forecast-bar">
+            <div class="temp-bar-track">
+              <div class="temp-bar-fill"
+                   style="left: <%= temperature_bar_position(day.low_temperature, global_min, global_max) %>%;
+                          right: <%= 100 - temperature_bar_position(day.high_temperature, global_min, global_max) %>%;">
+              </div>
+              <% if index == 0 %>
+                <div class="temp-bar-dot"
+                     style="left: <%= temperature_bar_position(@forecast.current_temperature, global_min, global_max) %>%;">
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="forecast-high">
+            <%= format_temperature(day.high_temperature) %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </section>
+
+  <%# Search again card %>
+  <section class="glass-card fade-in" style="animation-delay: 0.25s;">
+    <h2 class="glass-card-header">
+      <i class="bi bi-search"></i> SEARCH ANOTHER LOCATION
+    </h2>
+    <div class="glass-card-body">
+      <%= form_with url: forecast_path, method: :post, local: true, html: { id: "forecast-form", class: "search-row" } do |f| %>
+        <div class="search-input-wrap search-input-wrap--compact">
+          <i class="bi bi-geo-alt-fill search-input-icon"></i>
+          <%= f.text_field :address,
+              value: @address,
+              class: "search-input",
+              placeholder: "Enter a new address",
+              required: true,
+              autocomplete: "off",
+              "aria-label": "Address" %>
+        </div>
+        <button type="submit" class="search-btn search-btn--compact" id="submit-btn-2">
+          <span id="btn-text-2"><i class="bi bi-search"></i></span>
+          <span id="btn-loading-2" class="d-none"><span class="spinner spinner--sm"></span></span>
+        </button>
+      <% end %>
+    </div>
+  </section>
+
+  <footer class="weather-footer fade-in" style="animation-delay: 0.3s;">
+    Weather data from <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>
+    &middot; Cached 30 min per zip code (<%= @zip_code %>)
+  </footer>
+</div>
+
+<% content_for(:scripts) do %>
+  <%= render "forecasts/form_loading", suffixes: ["", "-2"] %>
+<% end %>

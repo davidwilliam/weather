@@ -1,0 +1,75 @@
+# Ruby / Bundler
+/.bundle
+/vendor/bundle
+
+# Environment files (secrets, API keys)
+/.env*
+
+# Rails logs and temp files
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# PID files
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Storage (uploaded files, SQLite databases)
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+
+# Rails credentials master key
+/config/master.key
+
+# Compiled assets
+/public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Node.js dependencies
+/node_modules
+
+# Yarn
+.yarn-integrity
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Linux
+*~
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# IDEs and editors
+/.idea
+/.vscode
+*.swp
+*.swo
+*.swn
+.project
+.settings
+*.sublime-project
+*.sublime-workspace
+.tm_properties
+
+# RSpec / testing
+/coverage
+/spec/examples.txt
+
+# Spring (Rails app preloader)
+/spring/*.pid
+
+# Kamal deployment secrets
+/.kamal/secrets
+
+# Byebug / Debug history
+.byebug_history
+.debug_history
